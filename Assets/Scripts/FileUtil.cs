@@ -12,16 +12,16 @@ public class FileUtil {
 
 	public static IEnumerator preparePath(string filename)
 	{
-		//#if UNITY_ANDROID && !UNITY_EDITOR
+		#if UNITY_ANDROID || UNITY_WEBGL
 		string orgpath = Application.streamingAssetsPath + "/" + filename;
 		Debug.Log(orgpath);
 		var www = new WWW(orgpath);
 		yield return www;
 		var path = Application.persistentDataPath + "/" + filename;
 		System.IO.File.WriteAllBytes (path, www.bytes);
-		//#else
-		//var path = Application.streamingAssetsPath + "/" + filename;
-		//#endif
+		#else
+		var path = Application.streamingAssetsPath + "/" + filename;
+		#endif
 		path_ = path;
 		yield return null;
 	}
