@@ -50,8 +50,6 @@ public class SystemManager : MonoBehaviour {
 	public Matrix4x4 ProjectionMatrix { get; set; }
 
 	private const int DefaultFps = 60;
-	const float RENDER_FPS = 60f;
-	const float RENDER_DT = 1f/RENDER_FPS;
 	public System.Diagnostics.Stopwatch stopwatch_;
 	private Thread update_thread_;
 	private int rendering_front_;
@@ -141,7 +139,7 @@ public class SystemManager : MonoBehaviour {
 		camera_final_.enabled = false;
 		UnityPluginIF.Load("UnityPlugin");
 
-		Application.targetFrameRate = (int)RENDER_FPS;
+		QualitySettings.vSyncCount = 0;
 		DontDestroyOnLoad(gameObject);
 
 		stopwatch_ = new System.Diagnostics.Stopwatch();
