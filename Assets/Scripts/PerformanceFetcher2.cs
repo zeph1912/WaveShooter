@@ -10,7 +10,7 @@ public class PerformanceFetcher2 : MonoBehaviour {
 
 	void OnPostRender()
 	{
-		PerformanceMeter.Instance.endRender();
+		//PerformanceMeter.Instance.endRender();
 	}
 
 }

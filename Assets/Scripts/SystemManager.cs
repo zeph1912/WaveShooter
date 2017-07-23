@@ -117,6 +117,9 @@ public class SystemManager : MonoBehaviour {
 	private bool initialized_ = false;
 	private bool auto_ = true;
 
+	private int bm_frameCounter = 0;
+	private float bm_timeElapsed = 0.0f;
+
 	IEnumerator Start()
 	{
 		yield return SystemManager.Instance.initialize();
@@ -381,13 +384,6 @@ public class SystemManager : MonoBehaviour {
 										  ref draw_buffer_[updating_front]);
 		draw_buffer_[updating_front].endRender();
 		
-		// performance meter
-#if UTJ_MULTI_THREADED
-		bool multi_threading = true;
-#else
-		bool multi_threading = false;
-#endif
-
 		// end
 		Sight.Instance.end(updating_front, current_camera);
 		Shield.Instance.end(updating_front);
@@ -614,6 +610,18 @@ public class SystemManager : MonoBehaviour {
 	{
 		if (!initialized_) {
 			return;
+		}
+
+		if (bm_timeElapsed < 1.0f)
+		{
+			bm_timeElapsed += Time.deltaTime;
+			bm_frameCounter++;
+		}
+		else
+		{
+			Debug.Log("FPS " + bm_frameCounter.ToString() + " in " + bm_timeElapsed.ToString());
+			bm_timeElapsed = 0;
+			bm_frameCounter = 0;
 		}
 		
 		InputManager.Instance.update(rendering_front_);
