@@ -153,6 +153,7 @@ public class SystemManager : MonoBehaviour {
 		manual_reset_event_ = new System.Threading.ManualResetEvent(false);
 		update_sync_frame_ = 0;
 #endif
+		Screen.SetResolution(800, 600, false);
 		setFPS(DefaultFps);
 		update_frame_ = 0;
 		update_time_ = 0f;
