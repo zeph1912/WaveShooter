@@ -198,7 +198,6 @@ public class SystemManager : MonoBehaviour {
 		MyFontRenderer.Instance.init();
 		GaugeJump.Create();
 
-		PerformanceMeter.Instance.init();
 
 		draw_buffer_ = new DrawBuffer[2];
 		for (int i = 0; i < 2; ++i) {
@@ -333,7 +332,6 @@ public class SystemManager : MonoBehaviour {
 
 	private void main_loop()
 	{
-		PerformanceMeter.Instance.beginUpdate();
 		int updating_front = get_front();
 
 		// fetch
@@ -352,9 +350,6 @@ public class SystemManager : MonoBehaviour {
  		// update
 		if (!pause_) {
 			int loop_num = 1;
-			if (PerformanceMeter.Instance.wasSlowLoop()) {
-				loop_num = 2;
-			}
 			for (var loop = 0; loop < loop_num; ++loop) {
 				GameManager.Instance.update(dt_, update_time_);
 				TaskManager.Instance.update(dt_, update_time_);
@@ -364,9 +359,7 @@ public class SystemManager : MonoBehaviour {
 				update_time_ += dt_;
 			}
 		}
-		PerformanceMeter.Instance.endUpdate();
 
-		PerformanceMeter.Instance.beginRenderUpdate();
 		CameraBase current_camera = spectator_mode_ ? spectator_camera_ : my_camera_;
 		// begin
 		MySprite.Instance.begin();
@@ -394,7 +387,6 @@ public class SystemManager : MonoBehaviour {
 #else
 		bool multi_threading = false;
 #endif
-		PerformanceMeter.Instance.drawMeters(updating_front, multi_threading);
 
 		// end
 		Sight.Instance.end(updating_front, current_camera);
@@ -407,7 +399,6 @@ public class SystemManager : MonoBehaviour {
 		MyFont.Instance.end(updating_front);
 		MySprite.Instance.end(updating_front);
 
-		PerformanceMeter.Instance.endRenderUpdate();
 	}
 
 #if UTJ_MULTI_THREADED
@@ -621,11 +612,9 @@ public class SystemManager : MonoBehaviour {
 	// The Update
 	void Update()
 	{
-		PerformanceMeter.Instance.beginRender();
 		if (!initialized_) {
 			return;
 		}
-		PerformanceMeter.Instance.beginBehaviourUpdate();
 		
 		InputManager.Instance.update(rendering_front_);
 #if !UTJ_MULTI_THREADED
@@ -641,7 +630,6 @@ public class SystemManager : MonoBehaviour {
 			return;
 		}
 		camera_update();
-		PerformanceMeter.Instance.endBehaviourUpdate();
 	}
 
 	public void OnPauseMenuAuto()
